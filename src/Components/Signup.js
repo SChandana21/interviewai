@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Internshiplogo from '../img/Startup.png';
 import { useRef, useEffect } from 'react';
 import toast, { Toaster } from "react-hot-toast";
+import axios from 'axios';
 
 const Signup = () => {
     const [useremail, setuseremail] = useState('');
@@ -41,32 +42,34 @@ const Signup = () => {
             if (!result && password) {
                 toast.error("Invalid Password", {
                     duration: 5000,
-                    ariaProps: {role: "alert", "aria-live": "assertive"},
+                    ariaProps: { role: "alert", "aria-live": "assertive" },
                 })
             }
         }, 600);
         return () => clearTimeout(timeout);
-            
+
     }, [password]);
 
     useEffect(() => {
-    const timeout = setTimeout(() => {
-        const passwordmatchingres = password === confirmpassword;
-        setmatchingpassword(passwordmatchingres);
-        console.log(matchingpassword);
-        if (!passwordmatchingres && confirmpassword) {
-            toast.error("Passwords not matching, Please check", {
-                duration: 5000,
-                ariaProps: {role: "alert", "aria-live": "assertive"},
-            })
-        }
-    }, 600);
-    return () => clearTimeout(timeout);
+        const timeout = setTimeout(() => {
+            const passwordmatchingres = password === confirmpassword;
+            setmatchingpassword(passwordmatchingres);
+            console.log(matchingpassword);
+            if (!passwordmatchingres && confirmpassword) {
+                toast.error("Passwords not matching, Please check", {
+                    duration: 5000,
+                    ariaProps: { role: "alert", "aria-live": "assertive" },
+                })
+            }
+        }, 600);
+        return () => clearTimeout(timeout);
     }, [confirmpassword, password])
+
+    const submitform = axios.post()
 
     return (
         <>
-        <Toaster />
+            <Toaster />
             <nav className="flex flex-col sm:flex flex-row  justify-between items-center px-6 py-4 bg-white font-poppins">
 
 
@@ -87,8 +90,8 @@ const Signup = () => {
           cursor-pointer rounded-lg px-5 py-2 h-12
           bg-sky-600 border border-violet-500
           text-white text-base
-          hover:bg-violet-600 focus:bg-violet-700
-          focus:outline-none focus:ring-4 focus:ring-violet-200
+          hover:bg-sky-700 focus:bg-sky-700
+          focus:outline-none focus:ring-4 focus:ring-sky-200
           transition duration-300
           "
                     >
@@ -137,7 +140,7 @@ const Signup = () => {
                                         <label htmlFor='password' className="block mb-2 text-sm font-medium text-gray-900 font-poppins">
                                             Password
                                             <input className=" border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5" id="password" type="password" required autoComplete='off' onChange={(e) => setpassword(e.target.value)} value={password} aria-describedby={!validpassword && password ? "password-error" : undefined} />
-                                        {!validpassword && password && (
+                                            {!validpassword && password && (
                                                 <span id="password-error" className="sr-only">
                                                     Invalid Password
                                                 </span>
@@ -147,8 +150,8 @@ const Signup = () => {
                                     <div>
                                         <label htmlFor='confirmpassword' class="block mb-2 text-sm font-medium text-gray-900 font-poppins">
                                             Confirm password
-                                            <input className=" border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 font-poppins" id="confirmpassword" type="password" required autoComplete='off' onChange={(e) => setconfirmpassword(e.target.value)} value={confirmpassword} aria-describedby={!matchingpassword && confirmpassword ? "confirmpass-error" : undefined } />
-                                          {!matchingpassword && confirmpassword &&  (
+                                            <input className=" border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 font-poppins" id="confirmpassword" type="password" required autoComplete='off' onChange={(e) => setconfirmpassword(e.target.value)} value={confirmpassword} aria-describedby={!matchingpassword && confirmpassword ? "confirmpass-error" : undefined} />
+                                            {!matchingpassword && confirmpassword && (
                                                 <span id="confirmpass-error" className="sr-only">
                                                     Passwords Not matching
                                                 </span>
@@ -159,8 +162,14 @@ const Signup = () => {
 
                                     </div>
 
-                                    <button class="w-full cursor-pointer font-poppins  bg-sky-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  focus:ring-blue-800 text-white" type="submit">
-                                        Create an account
+                                    <button
+                                        disabled={!validuseremail || !password || !confirmpassword}
+                                        className={`w-full font-poppins text-sm px-5 py-2.5 rounded-lg text-center font-medium focus:outline-none focus:ring-4 ${validpassword && validuseremail && matchingpassword
+                                                ? "bg-sky-600 hover:bg-sky-700 focus:ring-blue-800 cursor-pointer"
+                                                : "bg-sky-200 bg-opacity-50 cursor-not-allowed focus:ring-blue-300"
+                                            } text-white`}
+                                        type="submit"
+                                    > Create Account
                                     </button>
 
                                 </div>
