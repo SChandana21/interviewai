@@ -14,7 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  const LOGIN_URL = "http://localhost:3500/Login";
+  const LOGIN_URL = "https://serverinterviewai.onrender.com/Login";
 
   // Validate email
   useEffect(() => {

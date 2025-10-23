@@ -13,7 +13,7 @@ const FileList = () => {
     const fetchFiles = async () => {
       try {
         const email = localStorage.getItem("email");
-        const res = await axios.post("http://localhost:3500/fetched", { email });
+        const res = await axios.post("https://serverinterviewai.onrender.com/fetched", { email });
 
         if (res.data.success) {
           const fetchedFiles = [];
@@ -55,7 +55,7 @@ const FileList = () => {
     const file = files[index];
 
     try {
-      const res = await axios.post("http://localhost:3500/deletefile", {
+      const res = await axios.post("https://serverinterviewai.onrender.com/deletefile", {
         email,
         fileType: file.type,
       });
@@ -82,7 +82,7 @@ const FileList = () => {
         </h2>
         <div className="w-full max-w-lg flex justify-end mb-4">
           <button
-            className="font-poppins font-bold text-sky-600 bg-white border border-sky-600 px-4 py-2 rounded-lg hover:bg-sky-50 transition"
+            className="font-poppins font-bold text-sky-600 bg-white border border-sky-600 px-4 py-2 rounded-lg hover:bg-sky-50 transition cursor-pointer"
             onClick={() => setFilterRecent(!filterRecent)}
           >
             {filterRecent ? 'Clear Filter' : 'Filter by Recent'}

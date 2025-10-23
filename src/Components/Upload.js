@@ -52,7 +52,7 @@ const Upload = () => {
     try {
       // 1️⃣ First save files to DB
       const saveRes = await axios.post(
-        "http://localhost:3500/save",
+        "https://serverinterviewai.onrender.com/save",
         {
           email,
           resumeUrl: resume.name, // or actual URL after upload
@@ -70,7 +70,7 @@ const Upload = () => {
       }
 
       // 2️⃣ Then continue with upload & processing
-      const res = await axios.post("http://localhost:3500/upload", formData, {
+      const res = await axios.post("https://serverinterviewai.onrender.com/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
@@ -93,7 +93,7 @@ const Upload = () => {
     try {
       const email = localStorage.getItem("email");
       const response = await axios.post(
-        "http://localhost:3500/evaluate",
+        "https://serverinterviewai.onrender.com/evaluate",
         {
           email,
           question: nextQuestion,

@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
 import Header from './Header';
-
+import { useNavigate } from 'react-router-dom';
 const Signup = () => {
 
     
@@ -19,8 +19,8 @@ const Signup = () => {
 
     const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/;
-    const SIGNUP_URL = "http://localhost:3500/Signup"
-
+    const SIGNUP_URL = "https://serverinterviewai.onrender.com/Signup"
+    const navigate = useNavigate()
 
      useEffect(() => {
     
@@ -28,7 +28,7 @@ const Signup = () => {
     localStorage.removeItem("email");
   }, []);
 
-  
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             const result = EMAIL_REGEX.test(useremail);
@@ -87,6 +87,7 @@ const Signup = () => {
     );
         console.log('User Successfully Registered');
         toast.success("Congrats you are registered!")     
+        navigate('/Login', { replace: true }); 
     
   } catch (error) {
     console.log(error);

@@ -10,7 +10,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3500/logout", {}, { withCredentials: true });
+      await axios.post("https://serverinterviewai.onrender.com/logout", {}, { withCredentials: true });
       setUser(null);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("email");
