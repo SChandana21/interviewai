@@ -6,6 +6,9 @@ import axios from 'axios';
 import Header from './Header';
 
 const Signup = () => {
+
+    
+
     const [useremail, setuseremail] = useState('');
     const [validuseremail, setvaliduseremail] = useState(false);
     const [password, setpassword] = useState('')
@@ -18,6 +21,14 @@ const Signup = () => {
     const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/;
     const SIGNUP_URL = "http://localhost:3500/Signup"
 
+
+     useEffect(() => {
+    
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("email");
+  }, []);
+
+  
     useEffect(() => {
         const timeout = setTimeout(() => {
             const result = EMAIL_REGEX.test(useremail);
