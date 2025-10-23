@@ -71,7 +71,7 @@ const Upload = () => {
       <Toaster />
       <Header />
       <div className="bg-white p-6 rounded-2xl shadow-md max-w-5xl mx-auto mt-6 font-poppins">
-        <h1 className="text-2xl font-bold mb-4 text-center text-sky-600">Resume & Job Description Upload</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Resume & Job Description Upload</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div {...getResumeProps()} className="border-2 border-dashed p-4 rounded-lg text-center cursor-pointer">
@@ -87,10 +87,10 @@ const Upload = () => {
 
         <button
           onClick={handleUpload}
-          className="mt-4 w-full bg-sky-600 hover:bg-sky-700 text-white py-2 rounded-lg cursor-pointer flex justify-center items-center"
+          className="mt-4 w-full bg-sky-600 hover:bg-sky-700 text-white py-2 rounded-lg cursor-pointer flex justify-center items-center font-poppins"
         >
           {loading ? (
-            <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin "></div>
+            <div className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
             "Upload & Process"
           )}
@@ -105,7 +105,7 @@ const Upload = () => {
                   type="text"
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
-                  placeholder="Your answer..."
+                  
                   className="border p-2 rounded w-full font-poppins"
                 />
                 <button
@@ -134,7 +134,7 @@ const Upload = () => {
 
         <button
           onClick={() => navigate("/filelist")}
-          className="mt-6 w-full bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg cursor-pointer font-poppins"
+          className="mt-6 w-full bg-sky-600 hover:bg-sky-700 text-white py-2 rounded-lg cursor-pointer font-poppins"
         >
           Previous Files
         </button>
