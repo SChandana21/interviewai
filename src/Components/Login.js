@@ -43,7 +43,7 @@ const Login = () => {
       localStorage.setItem('accessToken', response.data.accessToken);
       localStorage.setItem('email', response.data.email);
 
-      navigate('/upload', { replace: true }); // ✅ navigate to protected route
+      navigate('/upload', { replace: true }); 
 
     } catch (error) {
       if (error.response) {

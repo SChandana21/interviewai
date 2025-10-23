@@ -5,7 +5,7 @@ import axios from "axios";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // { email, accessToken }
+  const [user, setUser] = useState(null); //using our accesstoken and email as user obj
 
   const refreshAccessToken = async () => {
     try {

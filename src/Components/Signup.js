@@ -75,7 +75,7 @@ const Signup = () => {
       { headers: { 'Content-Type': 'application/json' } }
     );
         console.log('User Successfully Registered');
-        toast.success("Congrats you are registered!")       //error handling
+        toast.success("Congrats you are registered!")     
     
   } catch (error) {
     console.log(error);

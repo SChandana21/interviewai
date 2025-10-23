@@ -14,8 +14,9 @@ const Upload = () => {
     "What motivates you to apply for this role?"
   ]);
   const [chat, setChat] = useState([]);
-  const [userAnswer, setUserAnswer] = useState("");
+  const [currentInput, setCurrentInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const navigate = useNavigate();
 
@@ -59,11 +60,30 @@ const Upload = () => {
     }
   };
 
-  const handleSendAnswer = (question, answer) => {
-    if (!answer.trim()) return;
-    const rating = Math.floor(Math.random() * 5) + 1;
-    setChat([...chat, { question, answer, rating }]);
-    setUserAnswer("");
+  const handleSendMessage = async () => {
+    if (!currentInput.trim()) return;
+
+    const nextQuestion = questions[chat.length] || null;
+    setSending(true);
+    try {
+      // Call your backend API which will evaluate answer via OpenAI
+      const email = localStorage.getItem("email");
+      const response = await axios.post("http://localhost:3500/evaluate", {
+        email,
+        question: nextQuestion,
+        answer: currentInput,
+      });
+
+      const rating = response.data.rating || Math.floor(Math.random() * 5) + 1; // fallback
+      setChat([...chat, { question: nextQuestion, answer: currentInput, rating }]);
+      toast.success("Answer processed successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to process answer.");
+    } finally {
+      setCurrentInput("");
+      setSending(false);
+    }
   };
 
   return (
@@ -97,40 +117,47 @@ const Upload = () => {
         </button>
 
         {questions.length > 0 && (
-          <div className="mt-6 space-y-4">
-            {questions.map((q, i) => (
-              <div key={i} className="p-3 bg-white rounded-lg font-poppins">
-                <p className="font-semibold mb-2">{q.trim()}</p>
-                <input
-                  type="text"
-                  value={userAnswer}
-                  onChange={(e) => setUserAnswer(e.target.value)}
-                  
-                  className="border p-2 rounded w-full font-poppins"
-                />
-                <button
-                  onClick={() => handleSendAnswer(q, userAnswer)}
-                  className="mt-2 bg-green-500 text-white px-3 py-1 rounded cursor-pointer font-poppins"
-                >
-                  Submit
-                </button>
-              </div>
-            ))}
+          <div className="mt-6 font-poppins animate-fadeIn">
+            <h2 className="text-lg font-bold mb-2">AI Questions</h2>
+            <div className="bg-white p-4 rounded-lg space-y-2 shadow-sm">
+              {questions.map((q, i) => (
+                <p key={i} className="font-semibold">{q}</p>
+              ))}
+            </div>
           </div>
         )}
 
         {chat.length > 0 && (
-          <div className="mt-8 font-poppins">
-            <h2 className="font-bold text-lg mb-2">Chat Summary</h2>
-            {chat.map((c, i) => (
-              <div key={i} className="p-2">
-                <p><b>Q:</b> {c.question}</p>
-                <p><b>A:</b> {c.answer}</p>
-                <p><b>Rating:</b> ⭐{c.rating}/5</p>
-              </div>
-            ))}
+          <div className="mt-6 font-poppins">
+            <h2 className="text-lg font-bold mb-2">Chat</h2>
+            <div className="space-y-2">
+              {chat.map((c, i) => (
+                <div key={i} className="p-2">
+                  <p><b>Q:</b> {c.question}</p>
+                  <p><b>A:</b> {c.answer}</p>
+                  <p><b>Rating:</b> ⭐{c.rating}/5</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
+
+        <div className="mt-4 flex gap-2">
+          <input
+            type="text"
+            value={currentInput}
+            onChange={(e) => setCurrentInput(e.target.value)}
+            placeholder="Type your answer..."
+            className="flex-1 border p-2 rounded-lg font-poppins"
+            onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+          />
+          <button
+            onClick={handleSendMessage}
+            className="bg-green-500 text-white px-4 rounded-lg cursor-pointer flex justify-center items-center font-poppins"
+          >
+            {sending ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : "Send"}
+          </button>
+        </div>
 
         <button
           onClick={() => navigate("/filelist")}
