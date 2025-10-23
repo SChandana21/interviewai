@@ -3,6 +3,7 @@ import Internshiplogo from '../img/Startup.png';
 import { useRef, useEffect } from 'react';
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
+import Header from './Header';
 
 const Signup = () => {
     const [useremail, setuseremail] = useState('');
@@ -15,7 +16,7 @@ const Signup = () => {
 
     const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/;
-
+    const SIGNUP_URL = "http://localhost:3500/Signup"
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -65,41 +66,36 @@ const Signup = () => {
         return () => clearTimeout(timeout);
     }, [confirmpassword, password])
 
-    const submitform = axios.post()
+   const HandleSignup = async (e) => {
+    e.preventDefault();
+  try {
+    await axios.post(
+      SIGNUP_URL,
+      { email:useremail, password },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+        console.log('User Successfully Registered');
+        toast.success("Congrats you are registered!")       //error handling
+    
+  } catch (error) {
+    console.log(error);
+     if (error.response) {
+    const statusCode = error.response.status;
+    if (statusCode === 409) {
+      toast.error("Looks like you've already registered, please login");
+    } 
+  } else {
+    toast.error("Looks like Our Server is  Facing issues.");  
+        }
+    
+  }
+};
 
     return (
         <>
             <Toaster />
-            <nav className="flex flex-col sm:flex flex-row  justify-between items-center px-6 py-4 bg-white font-poppins">
-
-
-                <div className="flex items-center gap-4">
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Tailwind_CSS_Logo.svg/2560px-Tailwind_CSS_Logo.svg.png"
-                        alt="Logo"
-                        className="w-10 sm:w-16"
-                    />
-                    <h1 className="text-xl sm:text-2xl font-bold text-sky-600">InterviewAI</h1>
-                </div>
-
-
-                <div className="flex flex-col items-center gap-2 sm:gap-6 flex-row">
-                    <span className="text-sm hidden sm:text-base">Already have an account?</span>
-                    <button
-                        className="
-          cursor-pointer rounded-lg px-5 py-2 h-12
-          bg-sky-600 border border-violet-500
-          text-white text-base
-          hover:bg-sky-700 focus:bg-sky-700
-          focus:outline-none focus:ring-4 focus:ring-sky-200
-          transition duration-300
-          "
-                    >
-                        Login
-                    </button>
-                </div>
-
-            </nav>
+            {/** Header Section */}
+            <Header/>
             {/* Form section */}
             <div className=' mt-12 px-4 grid grid-cols-1 gap-2 md:grid-cols-2 md:mt-16 gap-2 md:px-16 py-4'>
                 <div className='py-5 flex-1 flex flex-col items-start md: items-center justify-center gap-8' > {/* Grid Section 1 */}
@@ -116,7 +112,7 @@ const Signup = () => {
                     <p className='text-base text-gray-400'>Tailored Interview Practice — Powered by Your Own Resume. 🚀</p>
                 </div>
                 <div className=' py-5 flex-1'> {/* Grid section 2 */}
-                    <form>
+                    <form onSubmit={HandleSignup}>
                         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
                             <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
                                 <div className="p-10 space-y-4 md:space-y-6 sm:p-8">
@@ -183,5 +179,5 @@ const Signup = () => {
         </>
     )
 }
-
+//Things to add: Redirection and Spinner customize Toasts
 export default Signup
