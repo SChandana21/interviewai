@@ -11,6 +11,7 @@ function App() {
     <div className="App">
       {/* Public Routes */}
       <Routes>
+        <Route path="/" element={<Navigate to="/signup" />} />
         <Route path='/Signup' element={<Signup />} />
         <Route path='/Login' element={<Login />} />
       </Routes>
